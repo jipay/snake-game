@@ -1,5 +1,4 @@
 from turtle import Turtle
-STARTING_POSITIONS = [(0, 0), (-20, 0), (-40, 0)]
 MOVE_DISTANCE = 20
 UP = 90
 DOWN = 270
@@ -8,42 +7,34 @@ RIGHT = 0
 
 
 class Snake:
-
     def __init__(self):
-        self.segments = []
-        self.create_snake()
-        self.head = self.segments[0]
-
-    def create_snake(self):
+        self.nodes = []
         for _ in range(3):
-            self.add_segment()
+            self.add_nodes()
+        self.head = self.nodes[0]
 
-    def add_segment(self):
-        new_segment = Turtle("square")
-        new_segment.color("white")
-        new_segment.penup()
-        if len(self.segments) > 0:
-            if self.segments[0].heading() == UP:
-                new_segment.goto(self.segments[len(self.segments) - 1].xcor(),
-                                 self.segments[len(self.segments) - 1].ycor() - 20)
-            if self.segments[0].heading() == DOWN:
-                new_segment.goto(self.segments[len(self.segments) - 1].xcor(),
-                                 self.segments[len(self.segments) - 1].ycor() + 20)
-            if self.segments[0].heading() == RIGHT:
-                new_segment.goto(self.segments[len(self.segments) - 1].xcor() - 20,
-                                 self.segments[len(self.segments) - 1].ycor())
-            if self.segments[0].heading() == LEFT:
-                new_segment.goto(self.segments[len(self.segments) - 1].xcor() + 20,
-                                 self.segments[len(self.segments) - 1].ycor())
+    def add_nodes(self):
+        new = Turtle()
+        new.penup()
+        new.shape("square")
+        new.color("white")
+        if len(self.nodes) > 0:
+            last = self.nodes[len(self.nodes) - 1]
+            if self.nodes[0].heading() == UP:
+                new.goto(last.xcor(), last.ycor() - 20)
+            if self.nodes[0].heading() == DOWN:
+                new.goto(last.xcor(), last.ycor() + 20)
+            if self.nodes[0].heading() == RIGHT:
+                new.goto(last.xcor() - 20, last.ycor())
+            if self.nodes[0].heading() == LEFT:
+                new.goto(last.xcor() + 20, last.ycor())
         else:
-            new_segment.goto(0, 0)
-        self.segments.append(new_segment)
+            new.goto(0, 0)
+        self.nodes.append(new)
 
     def move(self):
-        for seg_num in range(len(self.segments) - 1, 0, -1):
-            new_x = self.segments[seg_num - 1].xcor()
-            new_y = self.segments[seg_num - 1].ycor()
-            self.segments[seg_num].goto(new_x, new_y)
+        for index in range(len(self.nodes) - 1, 0, -1):
+            self.nodes[index].goto(self.nodes[index - 1].xcor(), self.nodes[index - 1].ycor())
         self.head.forward(MOVE_DISTANCE)
 
     def up(self):
