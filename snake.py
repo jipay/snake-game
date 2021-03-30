@@ -32,6 +32,14 @@ class Snake:
             new.goto(0, 0)
         self.nodes.append(new)
 
+    def reset(self):
+        for n in self.nodes:
+            n.goto(1000, 1000)
+        self.nodes.clear()
+        for _ in range(3):
+            self.add_nodes()
+        self.head = self.nodes[0]
+
     def move(self):
         for index in range(len(self.nodes) - 1, 0, -1):
             self.nodes[index].goto(self.nodes[index - 1].xcor(), self.nodes[index - 1].ycor())

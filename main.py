@@ -18,6 +18,9 @@ mySnake = Snake()
 food = Food()
 score = ScoreBoard()
 
+
+
+
 screen.listen()
 screen.onkey(mySnake.up, "Up")
 screen.onkey(mySnake.down, "Down")
@@ -30,17 +33,18 @@ while is_on:
     mySnake.move()
     if mySnake.head.distance(food) < 15:
         food.refresh()
-        score.add(1)
+        score.increase_score()
         mySnake.add_nodes()
 
     if mySnake.head.xcor() > 280 or mySnake.head.xcor() < -280 or mySnake.head.ycor() > 280 or mySnake.head.ycor() < -280:
         print("GAME OVER.")
-        is_on = False
-        score.game_over()
+        # is_on = False
+        score.reset()
+        mySnake.reset()
 
-    for s in mySnake.segments[1:]:
+    for s in mySnake.nodes[1:]:
         if mySnake.head.distance(s) < 10:
-            game_is_on = False
-            score.game_over()
+            score.reset()
+            mySnake.reset()
 
 screen.exitonclick()
